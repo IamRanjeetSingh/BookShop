@@ -4,14 +4,48 @@ using System.Linq;
 
 namespace BookShop.DAL
 {
-	public class BuyerEFDao : BuyerDao
+	public class BuyerEfDao : IBuyerDao
 	{
 		public bool Add(Buyer buyer)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public bool Delete(int buyerId)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public bool Exists(string email, string password)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public Buyer GetByEmail(string email)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public Buyer GetById(int buyerId)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public bool Update(Buyer buyer)
+		{
+			throw new System.NotImplementedException();
+		}
+	}
+}
+
+
+/*
+ public bool Add(Buyer buyer)
 		{
 			if (buyer == null)
 				return false;
 
-			using (EFDatabaseContext db = new EFDatabaseContext())
+			using (EfDatabaseContext db = new EfDatabaseContext())
 			{
 				try
 				{
@@ -25,7 +59,7 @@ namespace BookShop.DAL
 
 		public bool Delete(int id)
 		{
-			using(EFDatabaseContext db = new EFDatabaseContext())
+			using(EfDatabaseContext db = new EfDatabaseContext())
 			{
 				Buyer buyer = db.Buyers.SingleOrDefault(b => b.Id == id);
 				if (buyer == null)
@@ -42,14 +76,14 @@ namespace BookShop.DAL
 			if (email == null)
 				return false;
 
-			using (EFDatabaseContext db = new EFDatabaseContext())
+			using (EfDatabaseContext db = new EfDatabaseContext())
 			{
 				return db.Buyers.FirstOrDefault(b => b.Email == email) != null;
 			}
 		}
 		public Buyer GetByEmail(string email)
 		{
-			using(EFDatabaseContext db = new EFDatabaseContext())
+			using(EfDatabaseContext db = new EfDatabaseContext())
 			{
 				return db.Buyers.FirstOrDefault(b => b.Email == email);
 			}
@@ -57,7 +91,7 @@ namespace BookShop.DAL
 
 		public Buyer GetById(int id)
 		{
-			using(EFDatabaseContext db = new EFDatabaseContext())
+			using(EfDatabaseContext db = new EfDatabaseContext())
 			{
 				return db.Buyers.SingleOrDefault(b => b.Id == id);
 			}
@@ -69,7 +103,7 @@ namespace BookShop.DAL
 			if (buyer == null)
 				return false;
 
-			using(EFDatabaseContext db = new EFDatabaseContext())
+			using(EfDatabaseContext db = new EfDatabaseContext())
 			{
 				Buyer trackedBuyer = db.Buyers.SingleOrDefault(b => b.Id == buyer.Id);
 				if (trackedBuyer == null)
@@ -83,5 +117,4 @@ namespace BookShop.DAL
 				return true;
 			}	
 		}
-	}
-}
+ */

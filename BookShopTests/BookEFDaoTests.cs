@@ -6,12 +6,12 @@ using System;
 namespace BookShopTests
 {
 	[TestClass]
-	public class BookEFDaoTests
+	public class BookEfDaoTests
 	{
 		[TestMethod]
 		public void Add_ValidBook_True()
 		{
-			BookDao dao = new BookEFDao();
+			IBookDao dao = new BookEfDao();
 
 			Book book = ModelProvider.GetValidBook(alreadyInsertedInDb: false);
 
@@ -22,7 +22,7 @@ namespace BookShopTests
 		[TestMethod]
 		public void Add_InvalidBook_True()
 		{
-			BookDao dao = new BookEFDao();
+			IBookDao dao = new BookEfDao();
 
 			Book[] invalidBooks = ModelProvider.GetInvalidBooks();
 
@@ -33,7 +33,7 @@ namespace BookShopTests
 		[TestMethod]
 		public void Get_ValidId_Book()
 		{
-			BookDao dao = new BookEFDao();
+			IBookDao dao = new BookEfDao();
 
 			Book book = ModelProvider.GetValidBook(alreadyInsertedInDb: true);
 
@@ -43,7 +43,7 @@ namespace BookShopTests
 		[TestMethod]
 		public void Get_InvalidId_Book()
 		{
-			BookDao dao = new BookEFDao();
+			IBookDao dao = new BookEfDao();
 
 			Assert.IsNull(dao.Get(-1));
 		}
@@ -51,7 +51,7 @@ namespace BookShopTests
 		[TestMethod]
 		public void Update_ValidBook_True()
 		{
-			BookDao dao = new BookEFDao();
+			IBookDao dao = new BookEfDao();
 
 			Book book = ModelProvider.GetValidBook(alreadyInsertedInDb: true);
 			book.Description = DateTime.Now + "_description";
@@ -63,7 +63,7 @@ namespace BookShopTests
 		[TestMethod]
 		public void Update_InvalidBook_False()
 		{
-			BookDao dao = new BookEFDao();
+			IBookDao dao = new BookEfDao();
 
 			Book[] invalidBooks = ModelProvider.GetInvalidBooks();
 
@@ -74,7 +74,7 @@ namespace BookShopTests
 		[TestMethod]
 		public void Remove_ValidId_True()
 		{
-			BookDao dao = new BookEFDao();
+			IBookDao dao = new BookEfDao();
 
 			Book book = ModelProvider.GetValidBook(alreadyInsertedInDb: true);
 
@@ -84,7 +84,7 @@ namespace BookShopTests
 		[TestMethod]
 		public void Remove_InvalidBook_False()
 		{
-			BookDao dao = new BookEFDao();
+			IBookDao dao = new BookEfDao();
 
 			Assert.IsFalse(dao.Delete(-1));
 		}

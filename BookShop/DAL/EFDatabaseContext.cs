@@ -1,21 +1,19 @@
 ﻿using BookShop.Models;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration;
 
 namespace BookShop.DAL
 {
-	public class EFDatabaseContext : DbContext
+	public class EfDatabaseContext : DbContext
 	{
 		public DbSet<Book> Books { get; set; }
 		public DbSet<Distributor> Distributors { get; set; }
 		public DbSet<Buyer> Buyers { get; set; }
 		public DbSet<Cart> Carts { get; set; }
 
-		public EFDatabaseContext() : base(@"Server=DESKTOP-3CET6HL\SQLEXPRESS;Database=BookShop;Trusted_Connection=true;")
+		public EfDatabaseContext() : base(@"Server=DESKTOP-3CET6HL\SQLEXPRESS;Database=BookShop;Trusted_Connection=true;")
 		{
-			Database.SetInitializer(new DropCreateDatabaseIfModelChanges<EFDatabaseContext>());
+			Database.SetInitializer(new DropCreateDatabaseIfModelChanges<EfDatabaseContext>());
 		}
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)

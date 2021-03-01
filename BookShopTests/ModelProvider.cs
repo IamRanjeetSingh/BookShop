@@ -12,7 +12,7 @@ namespace BookShopTests
 			Book book;
 			if (alreadyInsertedInDb)
 			{
-				using (EFDatabaseContext db = new EFDatabaseContext())
+				using (EfDatabaseContext db = new EfDatabaseContext())
 				{
 					book = db.Books.FirstOrDefault();
 					if (book == null)
@@ -66,7 +66,7 @@ namespace BookShopTests
 			Distributor distributor;
 			if (alreadyInsertedInDb)
 			{
-				using (EFDatabaseContext db = new EFDatabaseContext())
+				using (EfDatabaseContext db = new EfDatabaseContext())
 				{
 					distributor = db.Distributors.FirstOrDefault();
 					if (distributor == null)
@@ -113,7 +113,7 @@ namespace BookShopTests
 			Buyer buyer;
 			if (alreadyInsertedInDb)
 			{
-				using (EFDatabaseContext db = new EFDatabaseContext())
+				using (EfDatabaseContext db = new EfDatabaseContext())
 				{
 					buyer = db.Buyers.FirstOrDefault();
 					if (buyer == null)
@@ -159,7 +159,7 @@ namespace BookShopTests
 			Cart cart;
 			if(alreadyInsertedInDb)
 			{
-				using(EFDatabaseContext db = new EFDatabaseContext())
+				using(EfDatabaseContext db = new EfDatabaseContext())
 				{
 					cart = db.Carts.FirstOrDefault();
 					if(cart == null)

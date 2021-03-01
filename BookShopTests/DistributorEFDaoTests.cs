@@ -6,17 +6,17 @@ using System.Linq;
 namespace BookShopTests
 {
 	[TestClass]
-	public class DistributorEFDaoTests
+	public class DistributorEfDaoTests
 	{
 		[TestMethod]
 		public void Add_ValidBuyer_True()
 		{
-			DistributorDao dao = new DistributorEFDao();
+			IDistributorDao dao = new DistributorEfDao();
 
 			Distributor distributor = ModelProvider.GetValidDistributor(alreadyInsertedInDb: false);
 
 			Assert.IsTrue(dao.Add(distributor));
-			using (EFDatabaseContext db = new EFDatabaseContext())
+			using (EfDatabaseContext db = new EfDatabaseContext())
 			{
 				Assert.IsNotNull(db.Distributors.SingleOrDefault(d => d.Id == distributor.Id));
 			}
@@ -25,7 +25,7 @@ namespace BookShopTests
 		[TestMethod]
 		public void Add_InvalidBuyer_False()
 		{
-			DistributorDao dao = new DistributorEFDao();
+			IDistributorDao dao = new DistributorEfDao();
 
 			Distributor[] invalidBuyers = ModelProvider.GetInvalidDistributors();
 
@@ -36,7 +36,7 @@ namespace BookShopTests
 		[TestMethod]
 		public void Get_ValidId_Buyer()
 		{
-			DistributorDao dao = new DistributorEFDao();
+			IDistributorDao dao = new DistributorEfDao();
 
 			Distributor distributor = ModelProvider.GetValidDistributor(alreadyInsertedInDb: true);
 
@@ -49,7 +49,7 @@ namespace BookShopTests
 		[TestMethod]
 		public void Get_InvalidId_Null()
 		{
-			DistributorDao dao = new DistributorEFDao();
+			IDistributorDao dao = new DistributorEfDao();
 
 			Assert.IsNull(dao.GetById(-1));
 		}
@@ -57,14 +57,14 @@ namespace BookShopTests
 		[TestMethod]
 		public void Update_ValidBuyer_True()
 		{
-			DistributorDao dao = new DistributorEFDao();
+			IDistributorDao dao = new DistributorEfDao();
 
 			Distributor distributor = ModelProvider.GetValidDistributor(alreadyInsertedInDb: true);
 			distributor.Email = distributor.Email + "_new";
 
 			Assert.IsTrue(dao.Update(distributor));
 
-			using (EFDatabaseContext db = new EFDatabaseContext())
+			using (EfDatabaseContext db = new EfDatabaseContext())
 			{
 				Assert.AreEqual(distributor, db.Distributors.SingleOrDefault(d => d.Id == distributor.Id));
 			}
@@ -73,7 +73,7 @@ namespace BookShopTests
 		[TestMethod]
 		public void Update_InvalidBuyer_False()
 		{
-			DistributorDao dao = new DistributorEFDao();
+			IDistributorDao dao = new DistributorEfDao();
 
 			Distributor[] invalidBuyers = ModelProvider.GetInvalidDistributors();
 
@@ -84,12 +84,12 @@ namespace BookShopTests
 		[TestMethod]
 		public void Delete_ValidId_True()
 		{
-			DistributorDao dao = new DistributorEFDao();
+			IDistributorDao dao = new DistributorEfDao();
 
 			Distributor distributor = ModelProvider.GetValidDistributor(alreadyInsertedInDb: true);
 
 			Assert.IsTrue(dao.Delete(distributor.Id));
-			using (EFDatabaseContext db = new EFDatabaseContext())
+			using (EfDatabaseContext db = new EfDatabaseContext())
 			{
 				Assert.IsNull(db.Distributors.SingleOrDefault(d => d.Id == distributor.Id));
 			}
@@ -98,13 +98,13 @@ namespace BookShopTests
 		[TestMethod]
 		public void Delete_InvalidId_False()
 		{
-			DistributorDao dao = new DistributorEFDao();
+			IDistributorDao dao = new DistributorEfDao();
 		}
 
 		[TestMethod]
 		public void DoesEmailExist_Exist_True()
 		{
-			DistributorDao dao = new DistributorEFDao();
+			IDistributorDao dao = new DistributorEfDao();
 
 			Distributor distributor = ModelProvider.GetValidDistributor(alreadyInsertedInDb: true);
 
@@ -114,7 +114,7 @@ namespace BookShopTests
 		[TestMethod]
 		public void DoesEmailExist_NotExist_False()
 		{
-			DistributorDao dao = new DistributorEFDao();
+			IDistributorDao dao = new DistributorEfDao();
 			Assert.IsFalse(dao.DoesEmailExist("invalid_email"));
 		}
 	}

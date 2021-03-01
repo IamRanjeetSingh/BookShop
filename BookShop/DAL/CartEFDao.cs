@@ -1,16 +1,46 @@
 ﻿using BookShop.Models;
+using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 
 namespace BookShop.DAL
 {
-	public class CartEFDao : CartDao
+	public class CartEfDao : ICartDao
 	{
 		public bool Add(Cart cart)
 		{
+			throw new System.NotImplementedException();
+		}
+
+		public bool Delete(int cartId)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public IEnumerable<Cart> GetByBuyerId(int buyerId)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public Cart GetById(int cartId)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public bool Update(Cart cart)
+		{
+			throw new System.NotImplementedException();
+		}
+	}
+}
+
+
+/*
+ public bool Add(Cart cart)
+		{
 			if (cart == null)
 				return false;
-			using (EFDatabaseContext db = new EFDatabaseContext())
+			using (EfDatabaseContext db = new EfDatabaseContext())
 			{
 				try
 				{
@@ -25,7 +55,7 @@ namespace BookShop.DAL
 
 		public bool Delete(int buyerId, int bookId)
 		{
-			using (EFDatabaseContext db = new EFDatabaseContext())
+			using (EfDatabaseContext db = new EfDatabaseContext())
 			{
 				Cart cart = db.Carts.SingleOrDefault(c => c.BuyerId == buyerId && c.BookId == bookId);
 				if (cart == null)
@@ -39,11 +69,10 @@ namespace BookShop.DAL
 
 		public Cart[] GetAllByBuyerId(int buyerId)
 		{
-			using (EFDatabaseContext db = new EFDatabaseContext())
+			using (EfDatabaseContext db = new EfDatabaseContext())
 			{
 				Cart[] carts = db.Carts.Where(c => c.BuyerId == buyerId).ToArray();
 				return carts;
 			}
 		}
-	}
-}
+ */

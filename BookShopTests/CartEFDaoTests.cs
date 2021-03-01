@@ -6,17 +6,17 @@ using System.Linq;
 namespace BookShopTests
 {
 	[TestClass]
-	public class CartEFDaoTests
+	public class CartEfDaoTests
 	{
 		[TestMethod]
 		public void Add_ValidCart_True()
 		{
-			CartEFDao dao = new CartEFDao();
+			CartEfDao dao = new CartEfDao();
 
 			Cart cart = ModelProvider.GetValidCart(alreadyInsertedInDb: false);
 
 			Assert.IsTrue(dao.Add(cart));
-			using (EFDatabaseContext db = new EFDatabaseContext())
+			using (EfDatabaseContext db = new EfDatabaseContext())
 			{
 				Assert.IsNotNull(db.Carts.SingleOrDefault(c => c.BuyerId == cart.BuyerId && c.BookId == cart.BookId));
 			}
@@ -25,7 +25,7 @@ namespace BookShopTests
 		[TestMethod]
 		public void Add_InvalidCart_False()
 		{
-			CartDao dao = new CartEFDao();
+			ICartDao dao = new CartEfDao();
 
 			Cart[] invalidCarts = ModelProvider.GetInvalidCarts();
 
@@ -36,7 +36,7 @@ namespace BookShopTests
 		[TestMethod]
 		public void GetAllByBuyerId_ValidBuyerId_CartArray()
 		{
-			CartDao dao = new CartEFDao();
+			ICartDao dao = new CartEfDao();
 
 		}
 	}

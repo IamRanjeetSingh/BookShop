@@ -81,3 +81,15 @@ C:\Users\Dell\Visual Studio Workplace\BookShop\BookShop\obj\Debug\BookShop.cspro
 C:\Users\Dell\Visual Studio Workplace\BookShop\BookShop\obj\Debug\BookShop.csproj.CopyComplete
 C:\Users\Dell\Visual Studio Workplace\BookShop\BookShop\obj\Debug\BookShop.dll
 C:\Users\Dell\Visual Studio Workplace\BookShop\BookShop\obj\Debug\BookShop.pdb
+C:\Users\Dell\Visual Studio Workplace\BookShop\BookShop\bin\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Dell\Visual Studio Workplace\BookShop\BookShop\bin\System.Threading.Tasks.Extensions.dll
+C:\Users\Dell\Visual Studio Workplace\BookShop\BookShop\bin\Unity.Abstractions.dll
+C:\Users\Dell\Visual Studio Workplace\BookShop\BookShop\bin\Unity.Container.dll
+C:\Users\Dell\Visual Studio Workplace\BookShop\BookShop\bin\Unity.Mvc.dll
+C:\Users\Dell\Visual Studio Workplace\BookShop\BookShop\bin\WebActivatorEx.dll
+C:\Users\Dell\Visual Studio Workplace\BookShop\BookShop\bin\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\Dell\Visual Studio Workplace\BookShop\BookShop\bin\System.Threading.Tasks.Extensions.xml
+C:\Users\Dell\Visual Studio Workplace\BookShop\BookShop\bin\Unity.Abstractions.pdb
+C:\Users\Dell\Visual Studio Workplace\BookShop\BookShop\bin\Unity.Container.pdb
+C:\Users\Dell\Visual Studio Workplace\BookShop\BookShop\bin\Unity.Mvc.pdb
+C:\Users\Dell\Visual Studio Workplace\BookShop\BookShop\bin\Unity.Mvc.xml

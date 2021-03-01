@@ -1,18 +1,74 @@
 ﻿using BookShop.Models;
+using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
 
 namespace BookShop.DAL
 {
-	public class BookEFDao : BookDao
+	public class BookEfDao : IBookDao
 	{
 		public bool Add(Book book)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public bool Delete(int bookId)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public IEnumerable<Book> FindByAuthor(string author, int pageNum, int pageSize)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public IEnumerable<Book> FindByDistributor(string distributor, int pageNum, int pageSize)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public IEnumerable<Book> FindByGenre(string genre, int pageNum, int pageSize)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public IEnumerable<Book> FindByKeyword(string keyword, int pageNum, int pageSize)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public IEnumerable<Book> FindByPublisher(string publisher, int pageNum, int pageSize)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public IEnumerable<Book> GetAll(BookOrder order, int pageNum, int pageSize)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public Book GetById(int bookId)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public bool Update(Book book)
+		{
+			throw new System.NotImplementedException();
+		}
+	}
+}
+
+
+
+/*
+ public bool Add(Book book)
 		{
 			if (book == null)
 				return false;
 
-			using(EFDatabaseContext db = new EFDatabaseContext())
+			using(EfDatabaseContext db = new EfDatabaseContext())
 			{
 				try
 				{
@@ -27,7 +83,7 @@ namespace BookShop.DAL
 
 		public bool Delete(int id)
 		{
-			using(EFDatabaseContext db = new EFDatabaseContext())
+			using(EfDatabaseContext db = new EfDatabaseContext())
 			{
 				Book book = db.Books.SingleOrDefault(b => b.Id == id);
 				if (book == null)
@@ -41,7 +97,7 @@ namespace BookShop.DAL
 
 		public Book Get(int id)
 		{
-			using(EFDatabaseContext db = new EFDatabaseContext())
+			using(EfDatabaseContext db = new EfDatabaseContext())
 			{
 				return db.Books.SingleOrDefault(b => b.Id == id);
 			}
@@ -52,7 +108,7 @@ namespace BookShop.DAL
 			if (book == null)
 				return false;
 
-			using(EFDatabaseContext db = new EFDatabaseContext())
+			using(EfDatabaseContext db = new EfDatabaseContext())
 			{
 				Book trackedBook = db.Books.SingleOrDefault(b => b.Id == book.Id);
 
@@ -72,5 +128,4 @@ namespace BookShop.DAL
 				return true;
 			}
 		}
-	}
-}
+ */

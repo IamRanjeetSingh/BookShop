@@ -3,6 +3,12 @@
 	ViewBag.Title = "Index";
 }
 <h2>Buyer Index</h2>
+@ViewBag.Name
+<br />
+@ViewBag.Type
+<br />
+@ViewBag.IsAuthenticated
+<br />
 @using(Html.BeginForm("SignOut", "Account"))
 {
 	<input type="submit" value="sign out" class="btn btn-primary"/>

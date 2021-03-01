@@ -4,14 +4,47 @@ using System.Linq;
 
 namespace BookShop.DAL
 {
-	public class DistributorEFDao : DistributorDao
+	public class DistributorEfDao : IDistributorDao
 	{
 		public bool Add(Distributor distributor)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public bool Delete(int distributorId)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public bool Exists(string email, string password)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public Distributor GetByEmail(string email)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public Distributor GetById(int distributorId)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public bool Update(Distributor distributor)
+		{
+			throw new System.NotImplementedException();
+		}
+	}
+}
+
+/*
+ public bool Add(Distributor distributor)
 		{
 			if (distributor == null)
 				return false;
 
-			using (EFDatabaseContext db = new EFDatabaseContext())
+			using (EfDatabaseContext db = new EfDatabaseContext())
 			{
 				try
 				{
@@ -25,7 +58,7 @@ namespace BookShop.DAL
 
 		public bool Delete(int id)
 		{
-			using (EFDatabaseContext db = new EFDatabaseContext())
+			using (EfDatabaseContext db = new EfDatabaseContext())
 			{
 				Distributor distributor = db.Distributors.SingleOrDefault(d => d.Id == id);
 				if (distributor == null)
@@ -42,14 +75,14 @@ namespace BookShop.DAL
 			if (email == null)
 				return false;
 
-			using(EFDatabaseContext db = new EFDatabaseContext())
+			using(EfDatabaseContext db = new EfDatabaseContext())
 			{
 				return db.Distributors.FirstOrDefault(d => d.Email == email) != null;
 			}
 		}
 		public Distributor GetByEmail(string email)
 		{
-			using(EFDatabaseContext db = new EFDatabaseContext())
+			using(EfDatabaseContext db = new EfDatabaseContext())
 			{
 				return db.Distributors.FirstOrDefault(d => d.Email == email);
 			}
@@ -57,7 +90,7 @@ namespace BookShop.DAL
 
 		public Distributor GetById(int id)
 		{
-			using (EFDatabaseContext db = new EFDatabaseContext())
+			using (EfDatabaseContext db = new EfDatabaseContext())
 			{
 				return db.Distributors.SingleOrDefault(d => d.Id == id);
 			}
@@ -69,7 +102,7 @@ namespace BookShop.DAL
 			if (distributor == null)
 				return false;
 
-			using (EFDatabaseContext db = new EFDatabaseContext())
+			using (EfDatabaseContext db = new EfDatabaseContext())
 			{
 				Distributor trackedBuyer = db.Distributors.SingleOrDefault(d => d.Id == distributor.Id);
 				if (trackedBuyer == null)
@@ -83,5 +116,4 @@ namespace BookShop.DAL
 				return true;
 			}
 		}
-	}
-}
+ */

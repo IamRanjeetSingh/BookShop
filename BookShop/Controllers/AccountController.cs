@@ -9,6 +9,13 @@ namespace BookShop.Controllers
 	[AllowAnonymous]
 	public class AccountController : Controller
 	{
+		private DaoContainer _daoContainer;
+
+		public AccountController(DaoContainer daoContainer)
+		{
+			this._daoContainer = daoContainer;
+		}
+
 		[HttpGet]
 		public ActionResult SignIn()
 		{
@@ -21,16 +28,14 @@ namespace BookShop.Controllers
 			const string ErrorKey = "SignIn_Error";
 			if (ViewData.ModelState.IsValid)
 			{
-				DaoProvider dao = new DaoProvider();
-
-				Buyer buyer = dao.BuyerDao.GetByEmail(signIn.Email);
+				Buyer buyer = _daoContainer.BuyerDao.GetByEmail(signIn.Email);
 				if (buyer != null && buyer.Password == signIn.Password)
 				{
-					FormsAuthentication.SetAuthCookie(buyer.Email, signIn.StaySignedIn);
+					FormsAuthentication.SetAuthCookie(buyer.Id.ToString(), signIn.StaySignedIn);
 					return RedirectToAction("Index", "Buyer");
 				}
 
-				Distributor distributor = dao.DistributorDao.GetByEmail(signIn.Email);
+				Distributor distributor = _daoContainer.DistributorDao.GetByEmail(signIn.Email);
 				if (distributor != null && distributor.Password == signIn.Password)
 				{
 					FormsAuthentication.SetAuthCookie(distributor.Email, signIn.StaySignedIn);
@@ -64,9 +69,7 @@ namespace BookShop.Controllers
 			const string ErrorKey = "SignUp_Error";
 			if (ViewData.ModelState.IsValid)
 			{
-				DaoProvider dao = new DaoProvider();
-
-				if (dao.BuyerDao.Add(new Buyer() { Name = signUp.Name, Email = signUp.Email, Password = signUp.Password }))
+				if (_daoContainer.BuyerDao.Add(new Buyer() { Name = signUp.Name, Email = signUp.Email, Password = signUp.Password }))
 				{
 					FormsAuthentication.SetAuthCookie(signUp.Email, true);
 					return RedirectToAction("Index", "Buyer");
@@ -88,9 +91,7 @@ namespace BookShop.Controllers
 			const string ErrorKey = "SignUp_Error";
 			if (ViewData.ModelState.IsValid)
 			{
-				DaoProvider dao = new DaoProvider();
-
-				if (dao.DistributorDao.Add(new Distributor() { Name = signUp.Name, Email = signUp.Email, Password = signUp.Password }))
+				if (_daoContainer.DistributorDao.Add(new Distributor() { Name = signUp.Name, Email = signUp.Email, Password = signUp.Password }))
 				{
 					FormsAuthentication.SetAuthCookie(signUp.Email, true);
 					return RedirectToAction("Index", "Distributor");
