@@ -22,28 +22,35 @@ namespace BookShop.Controllers
 			return View();
 		}
 
+		[HttpGet]
+		public ActionResult SignInModal()
+		{
+			return PartialView("_SignIn");
+		}
+
 		[HttpPost]
 		public ActionResult SignIn(SignInViewModel signIn)
 		{
 			const string ErrorKey = "SignIn_Error";
 			if (ViewData.ModelState.IsValid)
 			{
-				Buyer buyer = _daoContainer.BuyerDao.GetByEmail(signIn.Email);
-				if (buyer != null && buyer.Password == signIn.Password)
+				Buyer buyer = _daoContainer.BuyerDao.GetByCredentials(signIn.Email, signIn.Password);
+				Distributor distributor = buyer == null ? _daoContainer.DistributorDao.GetByCredentials(signIn.Email, signIn.Password) : null;
+				if (buyer != null)
 				{
 					FormsAuthentication.SetAuthCookie(buyer.Id.ToString(), signIn.StaySignedIn);
 					return RedirectToAction("Index", "Buyer");
 				}
-
-				Distributor distributor = _daoContainer.DistributorDao.GetByEmail(signIn.Email);
-				if (distributor != null && distributor.Password == signIn.Password)
+				else if (distributor != null)
 				{
-					FormsAuthentication.SetAuthCookie(distributor.Email, signIn.StaySignedIn);
+					FormsAuthentication.SetAuthCookie(distributor.Id.ToString(), signIn.StaySignedIn);
 					return RedirectToAction("Index", "Distributor");
 				}
-
-				ViewData.ModelState.AddModelError(ErrorKey, "Incorrect password or email");
-				return View();
+				else
+				{
+					ViewData.ModelState.AddModelError(ErrorKey, "Incorrect Email or Password");
+					return PartialView("_SignIn");
+				}
 			}
 			else
 			{
@@ -53,12 +60,7 @@ namespace BookShop.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult SignUpBuyer()
-		{
-			return View();
-		}
-		[HttpGet]
-		public ActionResult SignUpDistributor()
+		public ActionResult SignUp()
 		{
 			return View();
 		}

@@ -1,0 +1,12 @@
+﻿@model BookShop.ViewModels.SignUpViewModel
+@{
+	ViewBag.Title = "SignUpBuyer";
+}
+
+<h2>SignUpBuyer</h2>
+@Html.Partial("_SignUp")
+<button class="btn btn-primary" data-toggle="modal" data-target="#signup-modal">sign up</button>
+
+@section Scripts{
+	@Scripts.Render("~/bundles/jqueryval")
+} 

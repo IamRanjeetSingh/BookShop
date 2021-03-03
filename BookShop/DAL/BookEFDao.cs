@@ -1,7 +1,8 @@
 ﻿using BookShop.Models;
+using System;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.Linq;
 
 namespace BookShop.DAL
@@ -10,122 +11,239 @@ namespace BookShop.DAL
 	{
 		public bool Add(Book book)
 		{
-			throw new System.NotImplementedException();
-		}
-
-		public bool Delete(int bookId)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public IEnumerable<Book> FindByAuthor(string author, int pageNum, int pageSize)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public IEnumerable<Book> FindByDistributor(string distributor, int pageNum, int pageSize)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public IEnumerable<Book> FindByGenre(string genre, int pageNum, int pageSize)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public IEnumerable<Book> FindByKeyword(string keyword, int pageNum, int pageSize)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public IEnumerable<Book> FindByPublisher(string publisher, int pageNum, int pageSize)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public IEnumerable<Book> GetAll(BookOrder order, int pageNum, int pageSize)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public Book GetById(int bookId)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public bool Update(Book book)
-		{
-			throw new System.NotImplementedException();
-		}
-	}
-}
-
-
-
-/*
- public bool Add(Book book)
-		{
-			if (book == null)
-				return false;
-
-			using(EfDatabaseContext db = new EfDatabaseContext())
+			try
 			{
-				try
+				using (EfDatabaseContext db = new EfDatabaseContext())
 				{
 					db.Books.Add(book);
 					db.SaveChanges();
 					return true;
 				}
-				catch(DbEntityValidationException) { return false; }
-				catch(DbUpdateException) { return false; }
+			}
+			catch (Exception e) when (e is DbEntityValidationException || e is NullReferenceException)
+			{
+				Debug.WriteLine(e);
+				return false;
 			}
 		}
 
-		public bool Delete(int id)
+		public bool Delete(int bookId)
 		{
-			using(EfDatabaseContext db = new EfDatabaseContext())
+			try
 			{
-				Book book = db.Books.SingleOrDefault(b => b.Id == id);
+				using (EfDatabaseContext db = new EfDatabaseContext())
+				{
+					Book book = db.Books.SingleOrDefault(b => b.Id == bookId);
+					if (book == null)
+						throw new NullReferenceException("No Book found for given Id");
+
+					db.Books.Remove(book);
+					db.SaveChanges();
+					return true;
+				}
+			}
+			catch (NullReferenceException e)
+			{
+				Debug.WriteLine(e);
+				return false;
+			}
+		}
+
+		public IEnumerable<Book> FindByAuthor(string author, int pageNum, int pageSize)
+		{
+			try
+			{
+				if (author == null)
+					throw new NullReferenceException("Null Author cannot be used for search");
+
+				using (EfDatabaseContext db = new EfDatabaseContext())
+				{
+					author = author.Trim().ToLower();
+					return db.Books
+						.Where(b => b.Author.Trim().ToLower() == author)
+						.Skip((pageNum - 1) * pageSize)
+						.Take(pageSize);
+				}
+			}
+			catch (NullReferenceException e)
+			{
+				Debug.WriteLine(e);
+				return null;
+			}
+		}
+
+		public IEnumerable<Book> FindByDistributor(string book, int pageNum, int pageSize)
+		{
+			try
+			{
 				if (book == null)
-					return false;
+					throw new NullReferenceException("Null Distributor cannot be used for search");
 
-				db.Books.Remove(book);
-				db.SaveChanges();
-				return true;
+				using (EfDatabaseContext db = new EfDatabaseContext())
+				{
+					book = book.Trim().ToLower();
+					return db.Books
+						.Where(b => b.Distributor.Name.Trim().ToLower() == book)
+						.Skip((pageNum - 1) * pageSize)
+						.Take(pageSize);
+				}
+			}
+			catch (NullReferenceException e)
+			{
+				Debug.WriteLine(e);
+				return null;
 			}
 		}
 
-		public Book Get(int id)
+		public IEnumerable<Book> FindByGenre(string genre, int pageNum, int pageSize)
 		{
-			using(EfDatabaseContext db = new EfDatabaseContext())
+			try
 			{
-				return db.Books.SingleOrDefault(b => b.Id == id);
+				if (genre == null)
+					throw new NullReferenceException("Null Genre cannot be used for search");
+
+				using (EfDatabaseContext db = new EfDatabaseContext())
+				{
+					genre = genre.Trim().ToLower();
+					return db.Books
+						.Where(b => b.Genre.Trim().ToLower() == genre)
+						.Skip((pageNum - 1) * pageSize)
+						.Take(pageSize);
+				}
+			}
+			catch (NullReferenceException e)
+			{
+				Debug.WriteLine(e);
+				return null;
+			}
+		}
+
+		public IEnumerable<Book> FindByKeyword(string keyword, int pageNum, int pageSize)
+		{
+			try
+			{
+				if (keyword == null)
+					throw new NullReferenceException("Null Keyword cannot be used for search");
+
+				using (EfDatabaseContext db = new EfDatabaseContext())
+				{
+					keyword = keyword.Trim().ToLower();
+					return db.Books
+						.Where(b => b.Name.Trim().ToLower().Contains(keyword) || b.Author.Trim().ToLower().Contains(keyword) || b.Publisher.Trim().ToLower().Contains(keyword))
+						.Skip((pageNum - 1) * pageSize)
+						.Take(pageSize);
+				}
+			}
+			catch (NullReferenceException e)
+			{
+				Debug.WriteLine(e);
+				return null;
+			}
+		}
+
+		public IEnumerable<Book> FindByPublisher(string publisher, int pageNum, int pageSize)
+		{
+			try
+			{
+				if (publisher == null)
+					throw new NullReferenceException("Null Publisher cannot be used for search");
+
+				using (EfDatabaseContext db = new EfDatabaseContext())
+				{
+					publisher = publisher.Trim().ToLower();
+					return db.Books
+						.Where(b => b.Genre.Trim().ToLower() == publisher)
+						.Skip((pageNum - 1) * pageSize)
+						.Take(pageSize);
+				}
+			}
+			catch (NullReferenceException e)
+			{
+				Debug.WriteLine(e);
+				return null;
+			}
+		}
+
+		public IEnumerable<Book> GetAll(BookOrder order, int pageNum, int pageSize)
+		{
+			using (EfDatabaseContext db = new EfDatabaseContext())
+			{
+				IEnumerable<Book> books = db.Books.Skip((pageNum - 1) * pageSize).Take(pageSize);
+
+				switch (order)
+				{
+					case BookOrder.DateDesc:
+						books = books.OrderByDescending(b => b.AddedAt);
+						break;
+					case BookOrder.Date:
+						books = books.OrderBy(b => b.AddedAt);
+						break;
+					case BookOrder.PriceDesc:
+						books = books.OrderByDescending(b => b.Price);
+						break;
+					case BookOrder.Price:
+						books = books.OrderBy(b => b.Price);
+						break;
+						//case BookOrder.RatingDesc:
+						//	books = books.OrderByDescending(b => b.Rating);
+						//	break;
+						//case BookOrder.Rating:
+						//	books = books.OrderBy(b => b.Rating);
+						//	break;
+				}
+
+				return books;
+			}
+		}
+
+		public Book GetById(int bookId)
+		{
+			using (EfDatabaseContext db = new EfDatabaseContext())
+			{
+				return db.Books.SingleOrDefault(b => b.Id == bookId);
 			}
 		}
 
 		public bool Update(Book book)
 		{
-			if (book == null)
-				return false;
-
-			using(EfDatabaseContext db = new EfDatabaseContext())
+			try
 			{
-				Book trackedBook = db.Books.SingleOrDefault(b => b.Id == book.Id);
+				if (book == null)
+					throw new NullReferenceException("Null entity cannot be used for updation");
+				using (EfDatabaseContext db = new EfDatabaseContext())
+				{
+					Book trackedBook = db.Books.SingleOrDefault(b => b.Id == book.Id);
+					if (trackedBook == null)
+						throw new NullReferenceException("No Distributor found for update for the given Id");
 
-				if (trackedBook == null)
-					return false;
+					if (book.Name != null && book.Name.Trim().Length > 0)
+						trackedBook.Name = book.Name.Trim();
+					if (book.Description != null && book.Description.Trim().Length > 0)
+						trackedBook.Description = book.Description.Trim();
+					if (book.DistributorId > 0)
+						trackedBook.DistributorId = book.DistributorId;
+					if (book.Author != null && book.Author.Trim().Length > 0)
+						trackedBook.Author = book.Author.Trim();
+					if (book.Publisher != null && book.Publisher.Trim().Length > 0)
+						trackedBook.Publisher = book.Publisher.Trim();
+					if (book.Genre != null && book.Genre.Trim().Length > 0)
+						trackedBook.Genre = book.Genre.Trim();
+					if (book.Language != null && book.Language.Trim().Length > 0)
+						trackedBook.Language = book.Language.Trim();
+					if (book.Price > -1)
+						trackedBook.Price = book.Price;
+					if (book.AddedAt != null && book.AddedAt.CompareTo(DateTime.Now) <= 0)
+						trackedBook.AddedAt = book.AddedAt;
 
-				trackedBook.Name = book.Name != null ? book.Name : trackedBook.Name;
-				trackedBook.Description = book.Description != null ? book.Description : trackedBook.Description;
-				trackedBook.Author = book.Author != null ? book.Author : trackedBook.Author;
-				trackedBook.Publisher = book.Publisher != null ? book.Publisher : trackedBook.Publisher;
-				trackedBook.Language = book.Language != null ? book.Language : trackedBook.Language;
-				trackedBook.Genre = book.Genre != null ? book.Genre : trackedBook.Genre;
-				trackedBook.Price = book.Price >= 0 ? book.Price : trackedBook.Price;
-				trackedBook.DistributorId = book.DistributorId > 0 ? book.DistributorId : trackedBook.DistributorId;
-
-				db.SaveChanges();
-				return true;
+					db.SaveChanges();
+					return true;
+				}
+			}
+			catch (NullReferenceException e)
+			{
+				Debug.WriteLine(e);
+				return false;
 			}
 		}
- */
+	}
+}

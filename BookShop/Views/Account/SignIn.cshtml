@@ -4,23 +4,9 @@
 }
 
 <h2>SignIn</h2>
-@using (Html.BeginForm("SignIn", "Account", FormMethod.Post))
-{
-	<div class="text-danger">
-		@Html.ValidationMessage("SignIn_Error", new { @class = "text-danger" })
-	</div>
-	<div class="form-group row">
-		@Html.LabelFor(s => s.Email, new { @class = "col-xs-3 col-md-1" })
-		@Html.TextBoxFor(s => s.Email, new { @class = "col-xs-6 col-md-3" })
-		@Html.ValidationMessageFor(s => s.Email, "", new { @class = "text-danger col-xs-3 col-md-2" })
-	</div>
-	<div class="form-group row">
-		@Html.LabelFor(s => s.Password, new { @class = "col-xs-4 col-md-1" })
-		@Html.TextBoxFor(s => s.Password, new { @class = "col-xs-8 col-md-3", type = "password" })
-		@Html.ValidationMessageFor(s => s.Password, "", new { @class = "text-danger col-xs-3 col-md-2" })
-	</div>
-	<input type="submit" value="sign in" class="btn btn-primary" />
-}
+@*@Html.Partial("_SignIn")*@
+@Html.Action("SignInModal", "Account")
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#signin-modal">sign in</button>
 
 @section Scripts{
 	@Scripts.Render("~/bundles/jqueryval")

@@ -13,7 +13,6 @@ namespace BookShop.DAL
 		bool Update(Distributor distributor);
 		bool Delete(int distributorId);
 		Distributor GetById(int distributorId);
-		Distributor GetByEmail(string email);
-		bool Exists(string email, string password);
+		Distributor GetByCredentials(string email, string password);
 	}
 }

@@ -1,5 +1,7 @@
 ﻿using BookShop.Models;
+using System;
 using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.Linq;
 
 namespace BookShop.DAL
@@ -8,112 +10,103 @@ namespace BookShop.DAL
 	{
 		public bool Add(Distributor distributor)
 		{
-			throw new System.NotImplementedException();
-		}
-
-		public bool Delete(int distributorId)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public bool Exists(string email, string password)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public Distributor GetByEmail(string email)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public Distributor GetById(int distributorId)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public bool Update(Distributor distributor)
-		{
-			throw new System.NotImplementedException();
-		}
-	}
-}
-
-/*
- public bool Add(Distributor distributor)
-		{
-			if (distributor == null)
-				return false;
-
-			using (EfDatabaseContext db = new EfDatabaseContext())
+			try
 			{
-				try
+				if (distributor == null)
+					throw new NullReferenceException("Null entity cannot be inserted");
+				using (EfDatabaseContext db = new EfDatabaseContext())
 				{
+					if (db.Distributors.Any(d => d.Email == distributor.Email || d.Password == distributor.Password))
+						throw new DbEntityValidationException("Duplicate Credentials found for Distributor");
+
 					db.Distributors.Add(distributor);
 					db.SaveChanges();
 					return true;
 				}
-				catch (DbEntityValidationException) { return false; }
 			}
-		}
-
-		public bool Delete(int id)
-		{
-			using (EfDatabaseContext db = new EfDatabaseContext())
+			catch (Exception e) when (e is DbEntityValidationException || e is NullReferenceException)
 			{
-				Distributor distributor = db.Distributors.SingleOrDefault(d => d.Id == id);
-				if (distributor == null)
-					return false;
-
-				db.Distributors.Remove(distributor);
-				db.SaveChanges();
-				return true;
-			}
-		}
-
-		public bool DoesEmailExist(string email)
-		{
-			if (email == null)
+				Debug.WriteLine(e);
 				return false;
-
-			using(EfDatabaseContext db = new EfDatabaseContext())
-			{
-				return db.Distributors.FirstOrDefault(d => d.Email == email) != null;
 			}
 		}
-		public Distributor GetByEmail(string email)
+
+		public bool Delete(int distributorId)
 		{
-			using(EfDatabaseContext db = new EfDatabaseContext())
+			try
 			{
-				return db.Distributors.FirstOrDefault(d => d.Email == email);
+				using (EfDatabaseContext db = new EfDatabaseContext())
+				{
+					Distributor distributor = db.Distributors.SingleOrDefault(d => d.Id == distributorId);
+					if (distributor == null)
+						throw new NullReferenceException("No Distributor found for given Id");
+
+					db.Distributors.Remove(distributor);
+					db.SaveChanges();
+					return true;
+				}
+			}
+			catch (NullReferenceException e)
+			{
+				Debug.WriteLine(e);
+				return false;
 			}
 		}
 
-		public Distributor GetById(int id)
+		public Distributor GetByCredentials(string email, string password)
+		{
+			try
+			{
+				if (email == null || password == null)
+					throw new NullReferenceException("Email or Password is null and cannot be used for search");
+				using (EfDatabaseContext db = new EfDatabaseContext())
+				{
+					return db.Distributors.SingleOrDefault(d => d.Email == email && d.Password == password);
+				}
+			}
+			catch (NullReferenceException e)
+			{
+				Debug.WriteLine(e);
+				return null;
+			}
+		}
+
+		public Distributor GetById(int distributorId)
 		{
 			using (EfDatabaseContext db = new EfDatabaseContext())
 			{
-				return db.Distributors.SingleOrDefault(d => d.Id == id);
+				return db.Distributors.SingleOrDefault(d => d.Id == distributorId);
 			}
 		}
-
 
 		public bool Update(Distributor distributor)
 		{
-			if (distributor == null)
-				return false;
-
-			using (EfDatabaseContext db = new EfDatabaseContext())
+			try
 			{
-				Distributor trackedBuyer = db.Distributors.SingleOrDefault(d => d.Id == distributor.Id);
-				if (trackedBuyer == null)
-					return false;
+				if (distributor == null)
+					throw new NullReferenceException("Null entity cannot be used for updation");
+				using (EfDatabaseContext db = new EfDatabaseContext())
+				{
+					Distributor trackedDistributor = db.Distributors.SingleOrDefault(d => d.Id == distributor.Id);
+					if (trackedDistributor == null)
+						throw new NullReferenceException("No Distributor found for update for the given Id");
 
-				trackedBuyer.Name = distributor.Name != null ? distributor.Name : trackedBuyer.Name;
-				trackedBuyer.Email = distributor.Email != null ? distributor.Email : trackedBuyer.Email;
-				trackedBuyer.Password = distributor.Password != null ? distributor.Password : trackedBuyer.Password;
+					if (distributor.Name != null && distributor.Name.Trim().Length != 0)
+						trackedDistributor.Name = distributor.Name.Trim();
+					if (distributor.Email != null && distributor.Email.Trim().Length != 0)
+						trackedDistributor.Email = distributor.Email.Trim();
+					if (distributor.Password != null && distributor.Password.Trim().Length != 0)
+						trackedDistributor.Password = distributor.Password.Trim();
 
-				db.SaveChanges();
-				return true;
+					db.SaveChanges();
+					return true;
+				}
+			}
+			catch (NullReferenceException e)
+			{
+				Debug.WriteLine(e);
+				return false;
 			}
 		}
- */
+	}
+}

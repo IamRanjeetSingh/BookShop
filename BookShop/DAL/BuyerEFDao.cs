@@ -1,5 +1,7 @@
 ﻿using BookShop.Models;
+using System;
 using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.Linq;
 
 namespace BookShop.DAL
@@ -8,113 +10,103 @@ namespace BookShop.DAL
 	{
 		public bool Add(Buyer buyer)
 		{
-			throw new System.NotImplementedException();
-		}
-
-		public bool Delete(int buyerId)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public bool Exists(string email, string password)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public Buyer GetByEmail(string email)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public Buyer GetById(int buyerId)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public bool Update(Buyer buyer)
-		{
-			throw new System.NotImplementedException();
-		}
-	}
-}
-
-
-/*
- public bool Add(Buyer buyer)
-		{
-			if (buyer == null)
-				return false;
-
-			using (EfDatabaseContext db = new EfDatabaseContext())
+			try
 			{
-				try
+				if (buyer == null)
+					throw new NullReferenceException("Null entity cannot be inserted");
+				using (EfDatabaseContext db = new EfDatabaseContext())
 				{
+					if (db.Buyers.Any(b => b.Email == buyer.Email || b.Password == buyer.Password))
+						throw new DbEntityValidationException("Duplicate Credentials found for Buyer");
+
 					db.Buyers.Add(buyer);
 					db.SaveChanges();
 					return true;
 				}
-				catch (DbEntityValidationException) { return false; }
 			}
-		}
-
-		public bool Delete(int id)
-		{
-			using(EfDatabaseContext db = new EfDatabaseContext())
+			catch(Exception e) when (e is DbEntityValidationException || e is NullReferenceException)
 			{
-				Buyer buyer = db.Buyers.SingleOrDefault(b => b.Id == id);
-				if (buyer == null)
-					return false;
-
-				db.Buyers.Remove(buyer);
-				db.SaveChanges();
-				return true;
-			}
-		}
-
-		public bool DoesEmailExist(string email)
-		{
-			if (email == null)
+				Debug.WriteLine(e);
 				return false;
-
-			using (EfDatabaseContext db = new EfDatabaseContext())
-			{
-				return db.Buyers.FirstOrDefault(b => b.Email == email) != null;
 			}
 		}
-		public Buyer GetByEmail(string email)
+
+		public bool Delete(int buyerId)
+		{
+			try
+			{
+				using (EfDatabaseContext db = new EfDatabaseContext())
+				{
+					Buyer buyer = db.Buyers.SingleOrDefault(b => b.Id == buyerId);
+					if (buyer == null)
+						throw new NullReferenceException("No Buyer found for given Id");
+					
+					db.Buyers.Remove(buyer);
+					db.SaveChanges();
+					return true;
+				}
+			}
+			catch(NullReferenceException e)
+			{
+				Debug.WriteLine(e);
+				return false;
+			}
+		}
+
+		public Buyer GetByCredentials(string email, string password)
+		{
+			try
+			{
+				if (email == null || password == null)
+					throw new NullReferenceException("Email or Password is null and cannot be used for search");
+				using (EfDatabaseContext db = new EfDatabaseContext())
+				{
+					return db.Buyers.SingleOrDefault(b => b.Email == email && b.Password == password);
+				}
+			}
+			catch(NullReferenceException e)
+			{
+				Debug.WriteLine(e);
+				return null;
+			}
+		}
+
+		public Buyer GetById(int buyerId)
 		{
 			using(EfDatabaseContext db = new EfDatabaseContext())
 			{
-				return db.Buyers.FirstOrDefault(b => b.Email == email);
+				return db.Buyers.SingleOrDefault(b => b.Id == buyerId);
 			}
 		}
-
-		public Buyer GetById(int id)
-		{
-			using(EfDatabaseContext db = new EfDatabaseContext())
-			{
-				return db.Buyers.SingleOrDefault(b => b.Id == id);
-			}
-		}
-
 
 		public bool Update(Buyer buyer)
 		{
-			if (buyer == null)
-				return false;
-
-			using(EfDatabaseContext db = new EfDatabaseContext())
+			try
 			{
-				Buyer trackedBuyer = db.Buyers.SingleOrDefault(b => b.Id == buyer.Id);
-				if (trackedBuyer == null)
-					return false;
+				if (buyer == null)
+					throw new NullReferenceException("Null entity cannot be used for updation");
+				using (EfDatabaseContext db = new EfDatabaseContext())
+				{
+					Buyer trackedBuyer = db.Buyers.SingleOrDefault(b => b.Id == buyer.Id);
+					if (trackedBuyer == null)
+						throw new NullReferenceException("No Buyer found for update for the given Id");
 
-				trackedBuyer.Name = buyer.Name != null ? buyer.Name : trackedBuyer.Name;
-				trackedBuyer.Email = buyer.Email != null ? buyer.Email : trackedBuyer.Email;
-				trackedBuyer.Password = buyer.Password != null ? buyer.Password : trackedBuyer.Password;
+					if(buyer.Name != null && buyer.Name.Trim().Length != 0)
+						trackedBuyer.Name = buyer.Name.Trim();
+					if(buyer.Email != null && buyer.Email.Trim().Length != 0)
+						trackedBuyer.Email = buyer.Email.Trim();
+					if(buyer.Password != null && buyer.Password.Trim().Length != 0)
+						trackedBuyer.Password = buyer.Password.Trim();
 
-				db.SaveChanges();
-				return true;
-			}	
+					db.SaveChanges();
+					return true;
+				}
+			}
+			catch(NullReferenceException e)
+			{
+				Debug.WriteLine(e);
+				return false;
+			}
 		}
- */
+	}
+}

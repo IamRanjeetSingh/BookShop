@@ -1,0 +1,70 @@
+﻿@model BookShop.ViewModels.SignUpViewModel
+<div id="signup-modal" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="modal-title">
+					<h3>Sign Up</h3>
+				</div>
+				<ol class="nav nav-pills">
+					<li class="nav-item">
+						<a class="nav-link active" data-toggle="pill" href="#BuyerSignUp">Buyer</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="pill" href="#DistributorSignUp">Distributor</a>
+					</li>
+				</ol>
+			</div>
+			<div class="modal-body">
+				<div class="tab-content">
+					<div class="tab-pane container active" id="BuyerSignUp">
+						<p class="text-muted">Sign Up as <strong class="text-primary">Buyer</strong> and browse through wide library of books</p>
+						@using (Html.BeginForm("SignUpBuyer", "Account", FormMethod.Post))
+						{
+							<div class="form-group row">
+								@Html.LabelFor(model => model.Name, new { @class = "col-12 col-md-3" })
+								@Html.EditorFor(model => model.Name, new { @class = "col-12 col-md-8 form-control" })
+							</div>
+							<div class="form-group row">
+								@Html.LabelFor(model => model.Email, new { @class = "col-12 col-md-3" })
+								@Html.EditorFor(model => model.Email, new { @class = "col-12 col-md-8 form-control" })
+							</div>
+							<div class="form-group row">
+								@Html.LabelFor(model => model.Password, new { @class = "col-12 col-md-3" })
+								@Html.EditorFor(model => model.Password, new { @class = "col-12 col-md-8 form-control", type = "password" })
+							</div>
+							<div class="form-group row">
+								@Html.LabelFor(model => model.ConfirmPassword, new { @class = "col-12 col-md-3" })
+								@Html.EditorFor(model => model.ConfirmPassword, new { @class = "col-12 col-md-8 form-control", type = "password" })
+							</div>
+							<input type="submit" value="sign up" class="btn btn-primary float-right">
+						}
+					</div>
+					<div class="tab-pane container fade" id="DistributorSignUp">
+						<p class="text-muted">Sign Up as <strong class="text-primary">Distributor</strong> and connect to worldwide customers</p>
+						@using (Html.BeginForm("SignUpDistributor", "Account", FormMethod.Post))
+						{
+							<div class="form-group row">
+								@Html.LabelFor(model => model.Name, new { @class = "col-12 col-md-3" })
+								@Html.EditorFor(model => model.Name, new { @class = "col-12 col-md-8 form-control" })
+							</div>
+							<div class="form-group row">
+								@Html.LabelFor(model => model.Email, new { @class = "col-12 col-md-3" })
+								@Html.EditorFor(model => model.Email, new { @class = "col-12 col-md-8 form-control" })
+							</div>
+							<div class="form-group row">
+								@Html.LabelFor(model => model.Password, new { @class = "col-12 col-md-3" })
+								@Html.EditorFor(model => model.Password, new { @class = "col-12 col-md-8 form-control", type = "password" })
+							</div>
+							<div class="form-group row">
+								@Html.LabelFor(model => model.ConfirmPassword, new { @class = "col-12 col-md-3" })
+								@Html.EditorFor(model => model.ConfirmPassword, new { @class = "col-12 col-md-8 form-control", type = "password" })
+							</div>
+							<input type="submit" value="sign up" class="btn btn-primary float-right">
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

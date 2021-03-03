@@ -1,0 +1,30 @@
+﻿@model BookShop.ViewModels.SignUpViewModel
+<div id="signin-modal" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="modal-title">
+					<span class="h3">Sign In</span>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+			</div>
+			<div class="modal-body">
+				@using (Html.BeginForm("SignIn", "Account", FormMethod.Post))
+				{
+					@Html.ValidationMessage("SignInError")
+					<div class="form-group row">
+						@Html.LabelFor(model => model.Email, new { @class = "col-12 col-md-2" })
+						@Html.TextBoxFor(model => model.Email, new { @class = "form-control col-12 col-md-7" })
+						@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger col-12 col-md-3" })
+					</div>
+					<div class="row form-group">
+						@Html.LabelFor(model => model.Password, new { @class = "col-12 col-md-2" })
+						@Html.TextBoxFor(model => model.Password, new { @class = "form-control col-12 col-md-7", type = "password" })
+						@Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger col-12 col-md-3" })
+					</div>
+					<input type="submit" value="sign in" class="btn btn-primary float-right">
+				}
+			</div>
+		</div>
+	</div>
+</div>

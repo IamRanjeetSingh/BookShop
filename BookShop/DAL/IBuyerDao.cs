@@ -13,7 +13,6 @@ namespace BookShop.DAL
 		bool Update(Buyer buyer);
 		bool Delete(int buyerId);
 		Buyer GetById(int buyerId);
-		Buyer GetByEmail(string email);
-		bool Exists(string email, string password);
+		Buyer GetByCredentials(string email, string password);
 	}
 }
