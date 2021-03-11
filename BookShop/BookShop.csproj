@@ -150,7 +150,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BuyerController.cs" />
     <Compile Include="Controllers\DistributorController.cs" />
-    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="DAL\BookOrder.cs" />
     <Compile Include="DAL\IBookDao.cs" />
     <Compile Include="DAL\BookEfDao.cs" />
@@ -228,8 +227,6 @@
     <Content Include="Views\Account\SignUp.cshtml" />
     <Content Include="Views\Account\_SignIn.cshtml" />
     <Content Include="Views\Account\_SignUp.cshtml" />
-    <Content Include="Views\Test\Login.cshtml" />
-    <Content Include="Views\Test\_Form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

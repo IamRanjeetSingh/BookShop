@@ -1,6 +1,7 @@
 ﻿using BookShop.Models;
+using System;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
 using System.Linq;
 
 namespace BookShop.DAL
@@ -9,56 +10,31 @@ namespace BookShop.DAL
 	{
 		public bool Add(Cart cart)
 		{
-			throw new System.NotImplementedException();
-		}
-
-		public bool Delete(int cartId)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public IEnumerable<Cart> GetByBuyerId(int buyerId)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public Cart GetById(int cartId)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public bool Update(Cart cart)
-		{
-			throw new System.NotImplementedException();
-		}
-	}
-}
-
-
-/*
- public bool Add(Cart cart)
-		{
-			if (cart == null)
+			if (cart == null)   //cannot insert null entity
 				return false;
+
 			using (EfDatabaseContext db = new EfDatabaseContext())
 			{
+				db.Carts.Add(cart);
 				try
 				{
-					db.Carts.Add(cart);
 					db.SaveChanges();
 					return true;
 				}
-				catch (DbUpdateException) //DbUpdateException is thrown when Foreign key constraint is violated for Cart entity
-				{ return false; }
+				catch (DbEntityValidationException) //entity doesn't have valid properties
+				{
+					return false;
+				}
 			}
 		}
 
-		public bool Delete(int buyerId, int bookId)
+		public bool Delete(int bookId, int buyerId)
 		{
 			using (EfDatabaseContext db = new EfDatabaseContext())
 			{
-				Cart cart = db.Carts.SingleOrDefault(c => c.BuyerId == buyerId && c.BookId == bookId);
-				if (cart == null)
+				Cart cart = db.Carts.SingleOrDefault(c => c.BookId == bookId && c.BuyerId == buyerId);
+
+				if (cart == null)   //no entity found for given ids
 					return false;
 
 				db.Carts.Remove(cart);
@@ -67,12 +43,20 @@ namespace BookShop.DAL
 			}
 		}
 
-		public Cart[] GetAllByBuyerId(int buyerId)
+		public IEnumerable<Cart> GetByBuyerId(int buyerId)
 		{
 			using (EfDatabaseContext db = new EfDatabaseContext())
 			{
-				Cart[] carts = db.Carts.Where(c => c.BuyerId == buyerId).ToArray();
-				return carts;
+				return db.Carts.Where(c => c.BuyerId == buyerId).ToArray();
 			}
 		}
- */
+
+		public Cart GetById(int bookId, int buyerId)
+		{
+			using (EfDatabaseContext db = new EfDatabaseContext())
+			{
+				return db.Carts.SingleOrDefault(c => c.BookId == bookId && c.BuyerId == buyerId);
+			}
+		}
+	}
+}

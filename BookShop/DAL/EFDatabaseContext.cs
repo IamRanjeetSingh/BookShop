@@ -10,6 +10,7 @@ namespace BookShop.DAL
 		public DbSet<Distributor> Distributors { get; set; }
 		public DbSet<Buyer> Buyers { get; set; }
 		public DbSet<Cart> Carts { get; set; }
+		public DbSet<Review> Reviews { get; set; }
 
 		public EfDatabaseContext() : base(@"Server=DESKTOP-3CET6HL\SQLEXPRESS;Database=BookShop;Trusted_Connection=true;")
 		{
@@ -22,6 +23,7 @@ namespace BookShop.DAL
 			ConfigureDistributorEntity(modelBuilder.Entity<Distributor>());
 			ConfigureBuyerEntity(modelBuilder.Entity<Buyer>());
 			ConfigureCartEntity(modelBuilder.Entity<Cart>());
+			ConfigureReviewEntity(modelBuilder.Entity<Review>());
 
 			base.OnModelCreating(modelBuilder);
 		}
@@ -72,6 +74,21 @@ namespace BookShop.DAL
 				.HasRequired(c => c.Book)
 				.WithMany()
 				.HasForeignKey(c => c.BookId);
+		}
+
+		private void ConfigureReviewEntity(EntityTypeConfiguration<Review> reviewEntity)
+		{
+			reviewEntity.HasKey(r => r.Id);
+
+			reviewEntity
+				.HasRequired(r => r.Book)
+				.WithMany()
+				.HasForeignKey(r => r.BookId);
+
+			reviewEntity
+				.HasRequired(r => r.Buyer)
+				.WithMany()
+				.HasForeignKey(r => r.BuyerId);
 		}
 	}
 }
